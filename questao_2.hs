@@ -11,11 +11,11 @@ binSearch n l left right
 floorAndCeil _ [] = (Nothing, Nothing)
 floorAndCeil n l
     | elem n l = (Just n, Just n)
-    | correctIndex >= (length l) - 1 = (Just (last sortedList), Nothing)
-    | correctIndex <= 0 = (Nothing, Just (head sortedList))
-    | otherwise = (Just (sortedList !! (correctIndex - 1)), Just (sortedList !! correctIndex))
+    | inputIndex >= (length l) - 1 = (Just (last sortedList), Nothing)
+    | inputIndex <= 0 = (Nothing, Just (head sortedList))
+    | otherwise = (Just (sortedList !! (inputIndex - 1)), Just (sortedList !! inputIndex))
     where
-        correctIndex = binSearch n sortedList 0 ((length l) - 1)
+        inputIndex = binSearch n sortedList 0 ((length l) - 1)
         sortedList = sort l
 
 assertResult testName actual expected
