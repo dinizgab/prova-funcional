@@ -1,4 +1,4 @@
-module Questao5 (Aluno, mediaCRA, groupByCRA) where
+module Questao5 (Aluno(..), mediaCRA, groupByCRA) where
 
 --  matrícula, primeiro nome, sobrenome, período de ingresso e CRA.
 data Aluno =
@@ -7,7 +7,8 @@ data Aluno =
 
 getCRA (Aluno _ _ _ _ cra) = cra
 
-mediaCRA xs = foldr (\alu acc -> acc + getCRA alu) 0 xs / fromIntegral (length xs)
+mediaCRA [] = Nothing
+mediaCRA xs = Just (foldr (\alu acc -> acc + getCRA alu) 0 xs / fromIntegral (length xs))
 
 groupByCRA [] = []
 groupByCRA xs = [(getCRA curr, filter (\alu-> getCRA alu == currCra) xs)] ++ groupByCRA (filter (\alu-> getCRA alu /= currCra) (tail xs))
