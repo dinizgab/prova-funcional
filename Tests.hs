@@ -2,7 +2,7 @@ module Tests where
 
 import Questao1 (closestPossible)
 import Questao2 (floorAndCeil)
-import Questao5 (Aluno, groupByCRA, mediaCRA)
+import Questao5 (Aluno(..), groupByCRA, mediaCRA)
 
 assertResult testName actual expected
     | expected == actual = putStrLn $ " ++ Passed! " ++ testName
@@ -13,7 +13,15 @@ runTests = do
     putStrLn "| Running tests for question 1 |"
     putStrLn "+------------------------------+"
 
-    closestPossible 54 [10, 22, 28, 29, 30, 40]
+    assertResult "1st Test Case from the doc" (closestPossible 54 [10, 22, 28, 29, 30, 40]) (Just (22, 30))
+    assertResult "2nd Test Case from the doc" (closestPossible 15 [1, 3, 4, 7, 10]) (Just (4, 10))
+    assertResult "Testing with empty list" (closestPossible 15 []) Nothing 
+    assertResult "Testing with list with just one element" (closestPossible 15 [1]) (Just (1, 1))
+    assertResult "Testing with list with negative values search for positive" (closestPossible 15 [-3,-3,-2,-1]) (Just (-1, -1))
+    assertResult "Testing with list with negative values searching for negative" (closestPossible (-6) [-3,-3,-2,-1]) (Just (-3, -3))
+    assertResult "Testing with for tuple with sum above value" (closestPossible (7) [-5,-3,0,8]) (Just (0, 8))
+    assertResult "Testing with for tuple subtracting its values" (closestPossible (7) [-5,-2,0,8]) (Just (-2, 8))
+    assertResult "Testing with for tuple with sum above 0 with bothn negative values" (closestPossible (1) [-3,-1,8]) (Just (-1, -1))
 
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 2 |"
@@ -64,7 +72,15 @@ runTests = do
     let listaAlunos = [Aluno "mat1" "nome1" "sobre1" "2021.1" 3.0, Aluno "mat2" "nome2" "sobre2" "2020.1" 7.0, Aluno "mat3" "nome3" "sobre3" "2022.2" 3.0, Aluno "mat4" "nome4" "sobre4" "2021.1" 6.0, Aluno "mat5" "nome5" "sobre5" "2020.1" 7.0]
     let listaAlunos2 = [Aluno "mat1" "nome1" "sobre1" "2021.1" 3.0, Aluno "mat2" "nome2" "sobre2" "2020.1" 7.0, Aluno "mat4" "nome4" "sobre4" "2021.1" 6.0, Aluno "mat5" "nome5" "sobre5" "2020.1" 4.0]
     let groupByCRAExpected = [(3, [Aluno "mat1" "nome1" "sobre1" "2021.1" 3.0, Aluno "mat3" "nome3" "sobre3" "2022.2" 3.0]), (7, [Aluno "mat2" "nome2" "sobre2" "2020.1" 7.0, Aluno "mat5" "nome5" "sobre5" "2020.1" 7.0]), (6, [Aluno "mat4" "nome4" "sobre4" "2021.1" 6.0])]
+    let listaAlunosMaxValues = [Aluno "mat1" "nome1" "sobre1" "2021.1" 10.0, Aluno "mat2" "nome2" "sobre2" "2020.1" 10.0, Aluno "mat4" "nome4" "sobre4" "2021.1" 10.0, Aluno "mat5" "nome5" "sobre5" "2020.1" 10.0]
+    let listaAlunosMinValues = [Aluno "mat1" "nome1" "sobre1" "2021.1" 0.0, Aluno "mat2" "nome2" "sobre2" "2020.1" 0.0, Aluno "mat4" "nome4" "sobre4" "2021.1" 0.0, Aluno "mat5" "nome5" "sobre5" "2020.1" 0.0]
+    
+    assertResult "Test group by student cra" (groupByCRA listaAlunos) groupByCRAExpected
+    assertResult "Test group by student cra with empty list" (groupByCRA []) []
+    assertResult "Test group by student cra with one student" (groupByCRA [Aluno "matx" "nomex" "sobrex" "2020.2" 0.0]) [(0.0, [Aluno "matx" "nomex" "sobrex" "2020.2" 0.0])]
+    assertResult "Test student cra calculation" (mediaCRA listaAlunos) (Just 5.2)      -- 26 / 5 == 5.2
+    assertResult "Test student cra mean calculation returning a round number" (mediaCRA listaAlunos2) (Just 5.0) -- 20 / 4 == 5
+    assertResult "Test student cra mean calculation with all max values (10)" (mediaCRA listaAlunosMaxValues) (Just 10.0) -- 40 / 4 == 10
+    assertResult "Test student cra mean calculation with all min values (0)" (mediaCRA listaAlunosMinValues) (Just 0.0) -- 0 / 4 == 0
+    assertResult "Test student cra mean calculation with empty list" (mediaCRA []) Nothing
 
-    assertResult "Test group by cra do aluno" (groupByCRA listaAlunos) groupByCRAExpected
-    assertResult "Test calculo da media de cra dos alunos" (mediaCRA listaAlunos) 5.2      -- 26 / 5 == 6
-    assertResult "Test calculo da media de cra numero inteiro" (mediaCRA listaAlunos2) 5.0 -- 20 / 4 == 5
