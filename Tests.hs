@@ -2,6 +2,7 @@ module Tests where
 
 import Questao1 (closestPossible)
 import Questao2 (floorAndCeil)
+import Questao3 (Stack(..), stack, pop, isEmpty, contains, search, len, peek, clear)
 import Questao5 (Aluno(..), groupByCRA, mediaCRA)
 
 assertResult testName actual expected
@@ -60,6 +61,29 @@ runTests = do
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 3 |"
     putStrLn "+------------------------------+"
+
+    let st :: Stack Int = Stack []
+    let st1 = stack 1 st
+    let st2 = stack 2 st1
+
+    assertResult "Testing if stack is initialized with 0" (len st) 0
+    assertResult "Testing addition of item into a stack" (peek st1) (Just 1)
+    assertResult "Testing the length of the stack after adding an item" (len st1) 1
+    assertResult "Testing peek after adding another element" (peek st2) (Just 2)
+    assertResult "Testing adding more elements into the stack" (len st2) 2
+    assertResult "Testing popping an element" (pop st2) (Just 2, st1)
+    assertResult "Testing popping an element of an empty stack" (pop st) (Nothing, st)
+    assertResult "Testing peeking an empty stack" (peek st) (Nothing)
+    assertResult "Testing clear stack" (len (clear st2)) 0
+    assertResult "Testing contains element in a stack" (contains (Just 2) st2) True
+    assertResult "Testing contains element that are not in the stack" (contains (Just 3) st2) False
+    assertResult "Testing contains element on an empty stack" (contains (Just 3) st) False
+    assertResult "Testing search element that are not in the stack" (search (Just 3) st2) (-1)
+    assertResult "Testing search element that are in the top of the stack" (search (Just 2) st2) 0
+    assertResult "Testing search element in the bottom of the stack" (search (Just 1) st2) 1
+    assertResult "Testing search element on an empty stack" (search (Just 1) st) (-1)
+    assertResult "Testing is empty on an empty stack" (isEmpty st) True
+    assertResult "Testing is empty on a not empty stack" (isEmpty st2) False
 
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 4 |"
