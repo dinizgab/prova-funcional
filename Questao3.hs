@@ -3,13 +3,30 @@ module Questao3 (Stack(..), stack, pop, peek, len, isEmpty, clear, contains, sea
 data Stack a = Stack [a]
     deriving (Eq, Show)
 
-stack x (Stack xs) = Stack (x : xs)
+-- A gente poderia inverter a ordem da pilha tambem
+--
+-- stack x (Stack xs) = [x] ++ xs
+--
+-- O acesso do pop seria bem mais simples com ela invertida,
+-- ja que o topo da pilha estaria no primeiro elemento
+--
+-- pop (Stack xs) = (head xs, Stack (tail xs))
 
-pop (Stack []) = (Nothing, Stack([])) 
-pop (Stack (x:xs)) = (Just x, Stack (xs))
+stack x (Stack xs) = Stack (xs ++ [x])
+
+popAux [] = (Nothing, []) 
+popAux [x] = (Just x, [])
+popAux (x:xs) = (result, [x] ++ rest)
+    where
+        (result, rest) = popAux (xs)
+
+pop (Stack xs) = (x, (Stack poppedStack))
+    where
+        (x, poppedStack) = popAux (xs)
 
 peek (Stack []) = Nothing
-peek (Stack (x:xs)) = Just x
+peek (Stack [x]) = Just x
+peek (Stack (x:xs)) = peek (Stack xs)
 
 len (Stack []) = 0
 len (Stack xs) = 1 + len (Stack (tail xs))
