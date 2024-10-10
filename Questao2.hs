@@ -4,7 +4,6 @@ import Data.List
 
 binSearch n l left right
     | left > right = left
-    | l !! middle == n = middle
     | l !! middle > n = binSearch n l left (middle - 1) 
     | otherwise = binSearch n l (middle + 1) right
     where 
