@@ -3,6 +3,7 @@ module Tests where
 import Questao1 (closestPossible)
 import Questao2 (floorAndCeil)
 import Questao3 (Stack(..), stack, pop, isEmpty, contains, search, len, peek, clear)
+import Questao4 (Queue(..), enqueue, dequeue, isEmpty, contains, search, len, peek, clear)
 import Questao5 (Aluno(..), groupByCRA, mediaCRA)
 
 assertResult testName actual expected
@@ -65,29 +66,56 @@ runTests = do
     let st :: Stack Int = Stack []
     let st1 = stack 1 st
     let st2 = stack 2 st1
+    let st3 = stack 3 st2
 
-    assertResult "Testing if stack is initialized with 0" (len st) 0
-    assertResult "Testing addition of item into a stack" (peek st1) (Just 1)
-    assertResult "Testing the length of the stack after adding an item" (len st1) 1
-    assertResult "Testing peek after adding another element" (peek st2) (Just 2)
-    assertResult "Testing adding more elements into the stack" (len st2) 2
-    assertResult "Testing popping an element" (pop st2) (Just 2, st1)
-    assertResult "Testing popping an element of an empty stack" (pop st) (Nothing, st)
-    assertResult "Testing peeking an empty stack" (peek st) (Nothing)
-    assertResult "Testing clear stack" (len (clear st2)) 0
-    assertResult "Testing contains element in a stack" (contains (Just 2) st2) True
-    assertResult "Testing contains element that are not in the stack" (contains (Just 3) st2) False
-    assertResult "Testing contains element on an empty stack" (contains (Just 3) st) False
-    assertResult "Testing search element that are not in the stack" (search (Just 3) st2) (-1)
-    assertResult "Testing search element that are in the top of the stack" (search (Just 2) st2) 0
-    assertResult "Testing search element in the bottom of the stack" (search (Just 1) st2) 1
-    assertResult "Testing search element on an empty stack" (search (Just 1) st) (-1)
-    assertResult "Testing is empty on an empty stack" (isEmpty st) True
-    assertResult "Testing is empty on a not empty stack" (isEmpty st2) False
+    assertResult "Testing if stack is initialized with 0" (Questao3.len st) 0
+    assertResult "Testing addition of item into a stack" (Questao3.peek st1) (Just 1)
+    assertResult "Testing the length of the stack after adding an item" (Questao3.len st1) 1
+    assertResult "Testing peek after adding another element" (Questao3.peek st2) (Just 2)
+    assertResult "Testing adding more elements into the stack" (Questao3.len st2) 2
+    assertResult "Testing popping an element" (Questao3.pop st2) (Just 2, st1)
+    assertResult "Testing popping an element of an empty stack" (Questao3.pop st) (Nothing, st)
+    assertResult "Testing peeking an empty stack" (Questao3.peek st) (Nothing)
+    assertResult "Testing clear stack" (Questao3.len (Questao3.clear st2)) 0
+    assertResult "Testing contains element in a stack" (Questao3.contains (Just 2) st2) True
+    assertResult "Testing contains element that are not in the stack" (Questao3.contains (Just 3) st2) False
+    assertResult "Testing contains element on an empty stack" (Questao3.contains (Just 3) st) False
+    assertResult "Testing search element that are not in the stack" (Questao3.search (Just 3) st2) (-1)
+    assertResult "Testing search element in the bottom of the stack" (Questao3.search (Just 1) st3) 2
+    assertResult "Testing search element in the middle of the stack" (Questao3.search (Just 2) st3) 1
+    assertResult "Testing search element in the top of the stack" (Questao3.search (Just 3) st3) 0
+    assertResult "Testing search element on an empty stack" (Questao3.search (Just 1) st) (-1)
+    assertResult "Testing is empty on an empty stack" (Questao3.isEmpty st) True
+    assertResult "Testing is empty on a not empty stack" (Questao3.isEmpty st2) False
 
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 4 |"
     putStrLn "+------------------------------+"
+
+    let q :: Queue Int = Queue []
+    let q1 = enqueue 1 q
+    let q2 = enqueue 2 q1
+    let q3 = enqueue 3 q2
+
+    assertResult "Testing if queie is initialized with 0" (Questao4.len q) 0
+    assertResult "Testing addition of item into a queue" (Questao4.peek q1) (Just 1)
+    assertResult "Testing the length of the queue after adding an item" (Questao4.len q1) 1
+    assertResult "Testing peek after adding another element" (Questao4.peek q2) (Just 1)
+    assertResult "Testing peeking an empty queue" (Questao4.peek q) (Nothing)
+    assertResult "Testing clear queue" (Questao4.len (Questao4.clear q2)) 0
+    assertResult "Testing is empty on an empty queue" (Questao4.isEmpty q) True
+    assertResult "Testing is empty on a not empty queue" (Questao4.isEmpty q2) False
+    assertResult "Testing dequeuing an element from an empty queue" (Questao4.dequeue q) (Nothing, q)
+    assertResult "Testing dequeuing an element from a queue" (Questao4.dequeue q1) (Just 1, q)
+    assertResult "Testing dequeuing an element from a queue with more than one elements" (Questao4.dequeue q2) (Just 1, Queue [2])
+    assertResult "Testing contains element in a queue" (Questao4.contains (Just 2) q2) True
+    assertResult "Testing contains element that are not in the queue" (Questao4.contains (Just 3) q2) False
+    assertResult "Testing contains element on an empty queue" (Questao4.contains (Just 3) q) False
+    assertResult "Testing search element that are not in the queue" (Questao4.search (Just 3) q2) (-1)
+    assertResult "Testing search element in the start of the queue" (Questao4.search (Just 1) q3) 0
+    assertResult "Testing search element in the middle of the queue" (Questao4.search (Just 2) q3) 1
+    assertResult "Testing search element in the end of the queue" (Questao4.search (Just 3) q3) 2
+    assertResult "Testing search element on an empty queue" (Questao4.search (Just 1) q) (-1)
 
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 5 |"
