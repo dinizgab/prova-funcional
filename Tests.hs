@@ -18,12 +18,12 @@ runTests = do
     assertResult "1st Test Case from the doc" (closestPossible 54 [10, 22, 28, 29, 30, 40]) (Just (22, 30))
     assertResult "2nd Test Case from the doc" (closestPossible 15 [1, 3, 4, 7, 10]) (Just (4, 10))
     assertResult "Testing with empty list" (closestPossible 15 []) Nothing 
-    assertResult "Testing with list with just one element" (closestPossible 15 [1]) (Just (1, 1))
-    assertResult "Testing with list with negative values search for positive" (closestPossible 15 [-3,-3,-2,-1]) (Just (-1, -1))
+    assertResult "Testing with list with just one element" (closestPossible 15 [1]) (Nothing)
+    assertResult "Testing with list with negative values search for positive" (closestPossible 15 [-3,-3,-1,-1]) (Just (-1, -1))
     assertResult "Testing with list with negative values searching for negative" (closestPossible (-6) [-3,-3,-2,-1]) (Just (-3, -3))
     assertResult "Testing with for tuple with sum above value" (closestPossible (7) [-5,-3,0,8]) (Just (0, 8))
     assertResult "Testing with for tuple subtracting its values" (closestPossible (7) [-5,-2,0,8]) (Just (-2, 8))
-    assertResult "Testing with for tuple with sum above 0 with bothn negative values" (closestPossible (1) [-3,-1,8]) (Just (-1, -1))
+    assertResult "Testing with for tuple with sum above 0 with bothn negative values" (closestPossible (1) [-3,-1,-1,8]) (Just (-1, -1))
 
     putStrLn "+------------------------------+"
     putStrLn "| Running tests for question 2 |"
